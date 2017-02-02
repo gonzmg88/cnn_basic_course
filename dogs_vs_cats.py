@@ -28,7 +28,6 @@ def image_files(train_file = "train.zip",train_folder = "train"):
 
     return [os.path.join("train",img) for img in os.listdir("train")]
 
-# mean = np.array([103.939,116.779,123.68])
 def load_image_set(all_files, image_size=(3,50,50)):
     assert K.image_dim_ordering() == "th", "functions prepared to load data on NCHW format channel,height,width"
     """ load images into numpy arrays  order (channel,rows,cols). It substract load the images the mean"""
@@ -40,7 +39,6 @@ def load_image_set(all_files, image_size=(3,50,50)):
             print("loading image (%d/%d)"%(i+1,len(all_files)))
         image = ndimage.imread(image_path)        
         image_down = sktrans.resize(image, image_size_reord)
-        #image_down -= mean
         feature_array[i] = image_down.transpose((2,0,1))
         label[i] = "dog" in image_path
     return feature_array, label
