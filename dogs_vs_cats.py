@@ -6,6 +6,7 @@ from scipy import ndimage
 import skimage.transform as sktrans
 from sklearn import metrics
 import matplotlib.pyplot as plt
+import keras.backend as K
 
 def image_files(train_file = "train.zip",train_folder = "train"):
     """ Download the training data from dropbox if it has not been downloaded and extract in train_folder folder."""
@@ -29,6 +30,7 @@ def image_files(train_file = "train.zip",train_folder = "train"):
 
 # mean = np.array([103.939,116.779,123.68])
 def load_image_set(all_files, image_size=(3,50,50)):
+    assert K.image_dim_ordering() == "th", "functions prepared to load data on NCHW format channel,height,width"
     """ load images into numpy arrays  order (channel,rows,cols). It substract load the images the mean"""
     feature_array = np.ndarray((len(all_files),)+image_size,dtype=np.float32)
     label = np.ndarray((len(all_files),),dtype=np.uint8)
