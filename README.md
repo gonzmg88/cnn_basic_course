@@ -1,11 +1,17 @@
 # `Hands-on` CNN course
 
 # Instalation
+
+From base anaconda:
+
 ```
- conda create -n cnn python=3.5 anaconda
- source activate deep_learning
- # pip install --upgrade --no-deps git+git://github.com/Theano/Theano.git
- # conda install tensorflow
- pip install keras --no-deps
+ pip install keras
 ```
 
+This will install `keras` and `theano`.
+
+In windows we have to configure `theano` use the windows compiler:
+
+```
+ conda install mingw libpython
+```

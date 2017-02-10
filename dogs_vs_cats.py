@@ -26,11 +26,11 @@ def image_files(train_file = "train.zip",train_folder = "train"):
     else:
         print("Data has already been extracted")
 
-    return [os.path.join("train",img) for img in os.listdir("train")]
+    return [os.path.join(train_folder,img) for img in os.listdir(train_folder)]
 
 def load_image_set(all_files, image_size=(3,50,50)):
-    assert K.image_dim_ordering() == "th", "functions prepared to load data on NCHW format channel,height,width"
     """ load images into numpy arrays  order (channel,rows,cols). It substract load the images the mean"""
+    assert K.image_dim_ordering() == "th", "functions prepared to load data on NCHW format channel,height,width"
     feature_array = np.ndarray((len(all_files),)+image_size,dtype=np.float32)
     label = np.ndarray((len(all_files),),dtype=np.uint8)
     image_size_reord = (image_size[1],image_size[2],image_size[0])
