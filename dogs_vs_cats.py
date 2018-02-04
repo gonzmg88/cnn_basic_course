@@ -2,8 +2,7 @@ import os
 import urllib.request
 import zipfile
 import numpy as np
-from scipy import ndimage
-import skimage.transform as sktrans
+from keras.preprocessing import image
 from sklearn import metrics
 import matplotlib.pyplot as plt
 import keras.backend as K
@@ -28,23 +27,19 @@ def image_files(train_file = "train.zip",train_folder = "train"):
 
     return [os.path.join(train_folder,img) for img in os.listdir(train_folder)]
 
-def load_image_set(all_files, image_size=(3,50,50)):
+def load_image_set(all_files, image_size=(50,50,3)):
     """ load images into numpy arrays  order (channel,rows,cols). It substract load the images the mean"""
-    assert K.image_dim_ordering() == "th", "functions prepared to load data on NCHW format channel,height,width"
     feature_array = np.ndarray((len(all_files),)+image_size,dtype=np.float32)
     label = np.ndarray((len(all_files),),dtype=np.uint8)
-    image_size_reord = (image_size[1],image_size[2],image_size[0])
     for i,image_path in enumerate(all_files):
         if i%100 == 0:
             print("loading image (%d/%d)"%(i+1,len(all_files)))
-        image = ndimage.imread(image_path)        
-        image_down = sktrans.resize(image, image_size_reord)
-        feature_array[i] = image_down.transpose((2,0,1))
+        feature_array[i] = image.img_to_array(image.load_img(image_path, target_size=image_size[:2]))
         label[i] = "dog" in image_path
     return feature_array, label
     
                   
-def training_test_datasets(all_files,n_images_train=500,n_images_test=500,image_size=(3,50,50)):
+def training_test_datasets(all_files,n_images_train=500,n_images_test=500,image_size=(50,50,3)):
     """
     Returns a randomly selected test and train datasets of the specified size.
 
